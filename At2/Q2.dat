@@ -1,0 +1,33 @@
+First Local Peak:  0.556975877609381
+Second Local Peak:  0.50098610600011
+First Local Minimum:  0.492503370510311
+Mean Square Error:  0.000398383328219251
+yInf:  0.499999791667699 
+Dt:  4.81 
+Km:  0.999999166671142 
+Zeta:  0.542385901367748 
+Tm:  3.68795473403699 
+Theta:  1.79455626257906 
+TauEst:  1.28629749879854 
+KEst:  0.499999791667699 
+
+[1] "Original System:"
+
+y1:
+                      1 
+  - - - - - - - - - - - - - - -
+    2 s^3 + 5 s^2 + 4 s + 2 
+
+
+Transfer Function: Continuous time model 
+
+[1] "Estimated System Below:"
+
+y1:
+    -0.4486389 s^1 + 0.4999998 
+  - - - - - - - - - - - - - - - - -
+    1.286297 s^2 + 1.395339 s + 1 
+
+
+Transfer Function: Continuous time model 
+

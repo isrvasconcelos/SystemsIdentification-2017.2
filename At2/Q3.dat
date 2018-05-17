@@ -1,0 +1,19 @@
+First Local Peak:  0.749999999999998
+Second Local Peak:  0.749999999999998
+First Local Minimum:  0.749999999999998
+yInf:  NaN 
+Dt:  0 
+Km:  NaN 
+Zeta:  NaN 
+Tm:  NaN 
+Theta:  NaN 
+TauEst:  NaN 
+KEst:  NaN 
+
+[1] "Original System:"
+
+y1:
+      -0.15 s^1 + 3 
+  - - - - - - - - - - - - -
+    0.1 s^2 + 1.9 s + 4 
+

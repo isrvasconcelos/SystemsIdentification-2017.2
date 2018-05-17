@@ -1,0 +1,120 @@
+source("filters.R")
+source("methods.R")
+
+###########################################
+# Importing data
+
+dir <- "datasets/"
+files <- c("conjunto1.txt", "conjunto2.txt", "conjunto3.txt", "conjunto4.txt")
+#files <- c("conjunto4.txt")
+#par(mfrow=c(2,2))
+#fileName <- "conjunto3.txt"
+
+zn_mse  <- c(0,0,0,0)
+hag_mse <- c(0,0,0,0)
+sm1_mse <- c(0,0,0,0)
+sk_mse  <- c(0,0,0,0)
+mol_mse <- c(0,0,0,0)
+sm2_mse <- c(0,0,0,0)
+
+it <- 1
+for(fileName in files) {
+
+	x <- read.csv( paste(dir,fileName,sep='') , header=FALSE)
+
+	yraw <- y <- x[,1]
+	t <- x[,2]
+
+	samplingFrequency <- 1/(t[2] - t[1]) # Get the sampling frequency for each dataset
+	precision <- FALSE # Parameter for high precision datasets
+
+	###########################################
+	# Evaluating derivatives and inflections
+	# Obs.: Calibration for setting the inflection point was done manually
+
+	Deriv1st <- round(diff(y),3)
+
+	if(fileName == "conjunto1.txt") {
+	# No filtering is necessary
+		Deriv2nd <- round(diff(diff(y)),3)
+		InflectionIndex = which( Deriv2nd == 0 )[1]
+	}
+
+	if(fileName == "conjunto2.txt") {
+		y <- lowpass(fftData=y, threshold=1, samplingFreq=samplingFrequency) # Filtering data
+		Deriv2nd <- round(diff(diff(y)),2)
+		InflectionIndex = which( Deriv2nd == 0 )[18]
+	}
+
+	if(fileName == "conjunto3.txt") {
+		y <- lowpass(fftData=y, threshold=0.25, samplingFreq=samplingFrequency) # Filtering data
+		Deriv2nd <- round(diff(diff(y)),2)
+		InflectionIndex = which( Deriv2nd == 0 )[48]
+	}
+
+	if(fileName == "conjunto4.txt") {
+		y <- lowpass(fftData=y, threshold=1.5, samplingFreq=samplingFrequency) # Filtering data
+		Deriv2nd <- round(diff(diff(y)),3)
+		InflectionIndex = which( Deriv2nd == 0 )[480]
+		precision = TRUE
+	}
+
+	InflectionPoint = t[InflectionIndex]
+	incIP = (y[InflectionIndex+4] - y[InflectionIndex-4]) / (t[InflectionIndex+4]-t[InflectionIndex-4])
+
+
+	###########################################
+	# Generate the tangent line on the inflection point
+	f = function(inc,x) { inc*x }
+	tgline = f(incIP, t)
+
+
+	###########################################
+	# Shift line from origin (0,0) to the inflection point
+	tgdelta <- tgline[2]-tgline[1] # Getting variation to fill the vector after the shift
+
+	tgline = tgline+y[InflectionIndex] # Shifting y-axis
+	tgline[(InflectionIndex):length(tgline)] = tgline[1:(1+length(tgline)-InflectionIndex)] # Shifting x-axis
+
+	for(i in (InflectionIndex-1):1) # Filling the samples before the shift
+		tgline[i]=tgline[(i+1)]-tgdelta
+
+
+	###########################################
+	# Identifying methods evaluation
+
+	zn_mse[it]  <- zieglerNichols(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+	hag_mse[it] <- hagglund(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+	sm1_mse[it] <- smith1st(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+	sk_mse[it]  <- sunKris(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+	mol_mse[it] <- mollenkamp(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+	#sm2_mse[it] <- smith2nd(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+
+#	calibration(interval=t, response=yraw, response_filtered=y, tgline=tgline, fileName=fileName, precision=precision)
+	it=(1+it)
+}
+
+
+###########################################
+# Plotting Results
+
+mse_set1 <- c(zn_mse[1], hag_mse[1], sm1_mse[1], sk_mse[1], mol_mse[1])
+mse_set2 <- c(zn_mse[2], hag_mse[2], sm1_mse[2], sk_mse[2], mol_mse[2])
+mse_set3 <- c(zn_mse[3], hag_mse[3], sm1_mse[3], sk_mse[3], mol_mse[3])
+mse_set4 <- c(zn_mse[4], hag_mse[4], sm1_mse[4], sk_mse[4], mol_mse[4])
+
+exportMSE_Barplot(mse_set1 , "dataset1_mse", "Dataset 1")
+exportMSE_Barplot(mse_set2 , "dataset2_mse", "Dataset 2")
+exportMSE_Barplot(mse_set3 , "dataset3_mse", "Dataset 3")
+exportMSE_Barplot(mse_set4 , "dataset4_mse", "Dataset 4")
+
+#barplot( mse_set1 , beside = TRUE , 
+#	 names.arg=c("Zieg-Nich.","Haggl.","Smith","Sund-Krish.", "Mollen."),
+#	 col=c("cyan4"), ylab="Mean Square Error", xlab="Method"
+#	)
+
