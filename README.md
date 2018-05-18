@@ -2,7 +2,7 @@
 
 Platform requirements: These scripts were tested on the operating systems described below.
 - Ubuntu 14.04 or 16.04 (Recommended). 
-- Ubuntu 18.04 (Eventually should require some additional dependencies)
+- Ubuntu 18.04 (Eventually should require some additional dependencies).
 
 Run the file "install_dependencies.sh" on the shell to fetch the required packages for the experiments:
 
