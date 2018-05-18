@@ -1,7 +1,8 @@
 # SystemsIdentification-2017.2
 
-Run the file "install_dependencies.sh" to fetch the required packages for the experiments:
-	sh install_dependencies.sh
+Run the file "install_dependencies.sh" on the shell to fetch the required packages for the experiments:
+
+		sh install_dependencies.sh
 
 On directory At1, the description of files are showed below:
 - The file "evaluation.R" runs the whole experiment. 
