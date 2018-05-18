@@ -406,6 +406,7 @@ mollenkamp <- function(interval, response, response_filtered, tgline, fileName, 
 		t3 <- t[t3Index]
 	}
 
+
 	###########################################
 	# Parameters evaluation
 	MollenkampBlock <- 0
@@ -414,6 +415,10 @@ mollenkamp <- function(interval, response, response_filtered, tgline, fileName, 
 
 	x <- (t2-t1) / (t3-t1)
 	zeta <-  ( 0.085 - 5.547*((0.475-x)^2) ) / ( x - 0.356 ) 
+
+	print(paste("x ",x))
+	print(paste("zeta ",zeta))
+
 
 	if(zeta < 1) { # Underdamped
 		f2 <- (0.708)*((2.811)^zeta)

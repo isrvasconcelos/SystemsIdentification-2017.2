@@ -140,6 +140,7 @@ suppressMessages(library(Metrics))
 	points(SystemResponse$t, SystemResponse$y, type='l', col='darkgoldenrod1')
 
 	abline(h=SetPoint, col="red", lwd=3, lty=2)
+	abline(h=0, col="red", lwd=3, lty=2)
 
 	legend("bottomright", legend=c("Estimated System", "Original System"), 
 		lty=1, col=c("chartreuse4","darkgoldenrod1"), bty="n")

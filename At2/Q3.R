@@ -128,7 +128,8 @@ suppressMessages(library(Metrics))
 
 setEPS()
 	postscript("Q3_Response.eps")
-	plot(SystemResponse$t, SystemResponse$y, type='l', col='darkgoldenrod1', lty=1, bty="n")
+	plot(SystemResponse$t, SystemResponse$y, type='l', col='darkgoldenrod1', lty=1, bty="n", ylim=c(0,1))
 	legend("bottomright", legend=c("Original System"), lty=1, col=c("darkgoldenrod1"), bty="n")
+	abline(h=0, col="red", lwd=3, lty=2)
 
 dev.off()
