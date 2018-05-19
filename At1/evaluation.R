@@ -113,8 +113,3 @@ exportMSE_Barplot(mse_set2 , "dataset2_mse", "Dataset 2")
 exportMSE_Barplot(mse_set3 , "dataset3_mse", "Dataset 3")
 exportMSE_Barplot(mse_set4 , "dataset4_mse", "Dataset 4")
 
-#barplot( mse_set1 , beside = TRUE , 
-#	 names.arg=c("Zieg-Nich.","Haggl.","Smith","Sund-Krish.", "Mollen."),
-#	 col=c("cyan4"), ylab="Mean Square Error", xlab="Method"
-#	)
-
